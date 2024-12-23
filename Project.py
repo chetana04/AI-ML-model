@@ -122,6 +122,7 @@ if uploaded_file:
                     st.write(f"**Linear Regression**: R² = {r2_lr:.2f}")
                     st.write(f"**Random Forest Regressor**: R² = {r2_rf:.2f}")
 
+
                     joblib.dump(lin_reg, "linear_regression_model.pkl")
                     joblib.dump(rf_reg, "random_forest_regressor.pkl")
 
@@ -201,6 +202,18 @@ if uploaded_file:
                     st.write(f"**Linear Regression Prediction**: {lin_reg_pred:.2f}")
                     st.write(f"**Random Forest Regressor Prediction**: {rf_reg_pred:.2f}")
 
+                    # Visualization (Actual vs. Predicted) 
+                    st.write("### Overlay: Actual vs Predicted Values")
+                    fig, ax = plt.subplots(figsize = (10, 6))
+                    ax.plot(range(len(y_test)), y_test.values, label = "Actual Values", color = "blue", linewidth = 2)
+                    ax.plot(range(len(y_test)), rf_reg.predict(X_test), label = "Random Forest Predictions", color = "orange")
+                    ax.plot(range(len(y_test)), lin_reg.predict(X_test), label = "Linear Regression Predictions", color = "green")
+                    ax.set_xlabel("Test Data Index")
+                    ax.set_ylabel("Values")
+                    ax.set_title("Overlay: Actual vs Predicted")
+                    ax.legend()
+                    st.pyplot(fig)
+
                 elif problem_type == "Classification":
                     st.write("### Classification Predictions")
                     log_reg_pred = log_reg.predict(input_df_scaled)[0]
@@ -210,4 +223,3 @@ if uploaded_file:
 
 else:
     st.info("Upload a dataset to proceed.")
-
